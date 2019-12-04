@@ -24,10 +24,8 @@ import java.util.Random;
 
 public class Population<C extends Chromosome<C>> implements Iterable<C> {
 
-	private static final int DEFAULT_NUMBER_OF_CHROMOSOMES = 32;
-
+	private static final int DEFAULT_NUMBER_OF_CHROMOSOMES = 1000;
 	private List<C> chromosomes = new ArrayList<C>(DEFAULT_NUMBER_OF_CHROMOSOMES);
-
 	private final Random random = new Random();
 
 	public void addChromosome(C chromosome) {
@@ -42,12 +40,16 @@ public class Population<C extends Chromosome<C>> implements Iterable<C> {
 		int numOfChromosomes = this.chromosomes.size();
 		// TODO improve random generator
 		// maybe use pattern strategy ?
-		int indx = this.random.nextInt(numOfChromosomes);
-		return this.chromosomes.get(indx);
+		int index = this.random.nextInt(numOfChromosomes);
+		return this.chromosomes.get(index);
 	}
 
-	public C getChromosomeByIndex(int indx) {
-		return this.chromosomes.get(indx);
+	public C getChromosomeByIndex(int index) {
+		return this.chromosomes.get(index);
+	}
+
+	public void setChromosomeByIndex(int index, C chromosome) {
+		this.chromosomes.set(index, chromosome);
 	}
 
 	public void sortPopulationByFitness(Comparator<C> chromosomesComparator) {

@@ -15,15 +15,20 @@
  ******************************************************************************/
 package com.lagodiuk.ga;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
 
 	private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
+	private Double parentChromosomesSurviveRate = 0.5;
+	private final Fitness<C, T> fitnessFunc;
+	private Population<C> population;
+	// listeners of genetic algorithm iterations (handle callback afterwards)
+	private final List<IterartionListener<C, T>> iterationListeners = new LinkedList<IterartionListener<C, T>>();
+	private boolean terminate = false;
+	// number of parental chromosomes, which survive (and move to new population)
+	private int parentChromosomesSurviveCount = ALL_PARENTAL_CHROMOSOMES;
+	private int iteration = 0;
 
 	private class ChromosomesComparator implements Comparator<C> {
 
@@ -50,23 +55,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 			this.cache.clear();
 		}
 	}
-
 	private final ChromosomesComparator chromosomesComparator;
-
-	private final Fitness<C, T> fitnessFunc;
-
-	private Population<C> population;
-
-	// listeners of genetic algorithm iterations (handle callback afterwards)
-	private final List<IterartionListener<C, T>> iterationListeners = new LinkedList<IterartionListener<C, T>>();
-
-	private boolean terminate = false;
-
-	// number of parental chromosomes, which survive (and move to new
-	// population)
-	private int parentChromosomesSurviveCount = ALL_PARENTAL_CHROMOSOMES;
-
-	private int iteration = 0;
 
 	public GeneticAlgorithm(Population<C> population, Fitness<C, T> fitnessFunc) {
 		this.population = population;
@@ -77,28 +66,32 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
-
 		Population<C> newPopulation = new Population<C>();
+		this.setParentChromosomesSurviveCount(parentPopulationSize);
+		parentPopulationSize = this.parentChromosomesSurviveCount;
 
-		for (int i = 0; (i < parentPopulationSize) && (i < this.parentChromosomesSurviveCount); i++) {
+		for (int i = 0; i < this.parentChromosomesSurviveCount; i++) {  //&& i < parentPopulationSize
 			newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
 		}
 
-		for (int i = 0; i < parentPopulationSize; i++) {
-			C chromosome = this.population.getChromosomeByIndex(i);
+		Random random = new Random();
+		int range = random.nextInt((int) (parentPopulationSize*0.01));
+		for(int i = 0; i < range; i++) {
+			int mutateIndex = random.nextInt(parentPopulationSize);
+			C chromosome = this.population.getChromosomeByIndex(mutateIndex);
 			C mutated = chromosome.mutate();
-
-			C otherChromosome = this.population.getRandomChromosome();
-			List<C> crossovered = chromosome.crossover(otherChromosome);
-
-			newPopulation.addChromosome(mutated);
-			for (C c : crossovered) {
-				newPopulation.addChromosome(c);
-			}
+			newPopulation.setChromosomeByIndex(mutateIndex, mutated);
 		}
 
+//		C otherChromosome = this.population.getRandomChromosome();
+//		List<C> crossovered = chromosome.crossover(otherChromosome);
+//		newPopulation.addChromosome(mutated);
+//		for (C c : crossovered) {
+//			newPopulation.addChromosome(c);
+//		}
+
 		newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-		newPopulation.trim(parentPopulationSize);
+		//newPopulation.trim(parentPopulationSize);
 		this.population = newPopulation;
 	}
 
@@ -138,7 +131,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 	}
 
 	public void setParentChromosomesSurviveCount(int parentChromosomesCount) {
-		this.parentChromosomesSurviveCount = parentChromosomesCount;
+		this.parentChromosomesSurviveCount = (int) (parentChromosomesCount * this.parentChromosomesSurviveRate);
 	}
 
 	public int getParentChromosomesSurviveCount() {

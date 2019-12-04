@@ -75,7 +75,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				run(pattern);
 		}
 
-		public static void run(String pattern) {
+		public static Long run(String pattern) {
 				final long generation = 0L;
 				final Grid grid = new Grid(generation);
 				grid.add(Group.create(generation, pattern));
@@ -88,6 +88,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 						game = game.generation(gridMonitor);
 				}
 				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");
+				return game.generation;
 		}
 
 		private Game(long generation, BiConsumer<Long, Group> monitor) {

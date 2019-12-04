@@ -22,18 +22,15 @@ import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
 import com.lagodiuk.ga.IterartionListener;
 import com.lagodiuk.ga.Population;
+import edu.neu.coe.info6205.life.base.Game;
 
 public class Demo {
 
 	public static void main(String[] args) {
-		Population<MyVector> population = createInitialPopulation(10001);
-
-		Fitness<MyVector, Double> fitness = new MyVectorFitness();
-
-		GeneticAlgorithm<MyVector, Double> ga = new GeneticAlgorithm<MyVector, Double>(population, fitness);
-
+		Population<Pattern> population = createInitialPopulation(1000);
+		Fitness<Pattern, Long> fitness = new PatternFitness();
+		GeneticAlgorithm<Pattern, Long> ga = new GeneticAlgorithm<>(population, fitness);
 		addListener(ga);
-
 		ga.evolve(500);
 	}
 
@@ -41,14 +38,17 @@ public class Demo {
 	 * The simplest strategy for creating initial population <br/>
 	 * in real life it could be more complex
 	 */
-	private static Population<MyVector> createInitialPopulation(int populationSize) {
-		Population<MyVector> population = new Population<MyVector>();
-		MyVector base = new MyVector();
+	private static Population<Pattern> createInitialPopulation(int populationSize) {
+		Population<Pattern> population = new Population<>();
+		Pattern base = new Pattern();
+		Random random = new Random();
+		int coordinateRange = 20;
 		for (int i = 0; i < populationSize; i++) {
-			// each member of initial population
-			// is mutated clone of base chromosome
-			MyVector chr = base.mutate();
-			population.addChromosome(chr);
+			for(int j = 0; j < base.len; j++) {
+				base.vector[j][0] = random.nextInt(coordinateRange);
+				base.vector[j][1] = random.nextInt(coordinateRange);
+			}
+			population.addChromosome(base);
 		}
 		return population;
 	}
@@ -56,19 +56,19 @@ public class Demo {
 	/**
 	 * After each iteration Genetic algorithm notifies listener
 	 */
-	private static void addListener(GeneticAlgorithm<MyVector, Double> ga) {
+	private static void addListener(GeneticAlgorithm<Pattern, Long> ga) {
 		// just for pretty print
 		System.out.println(String.format("%s\t%s\t%s", "iter", "fit", "chromosome"));
 
 		// Lets add listener, which prints best chromosome after each iteration
-		ga.addIterationListener(new IterartionListener<MyVector, Double>() {
+		ga.addIterationListener(new IterartionListener<Pattern, Long>() {
 
 			private final double threshold = 1e-5;
 
 			@Override
-			public void update(GeneticAlgorithm<MyVector, Double> ga) {
+			public void update(GeneticAlgorithm<Pattern, Long> ga) {
 
-				MyVector best = ga.getBest();
+				Pattern best = ga.getBest();
 				double bestFit = ga.fitness(best);
 				int iteration = ga.getIteration();
 
@@ -84,26 +84,27 @@ public class Demo {
 	}
 
 	/**
-	 * Chromosome, which represents vector of five integers
+	 * Chromosome, which represents pattern
 	 */
-	public static class MyVector implements Chromosome<MyVector>, Cloneable {
+	public static class Pattern implements Chromosome<Pattern>, Cloneable {
 
 		private static final Random random = new Random();
-
-		private final int[] vector = new int[1000];
+		int len = 9;
+		private final int[][] vector = new int[len][2];
 
 		/**
 		 * Returns clone of current chromosome, which is mutated a bit
 		 */
 		@Override
-		public MyVector mutate() {
-			MyVector result = this.clone();
+		public Pattern mutate() {
+			Pattern result = this.clone();
 
 			// just select random element of vector
 			// and increase or decrease it on small value
 			int index = random.nextInt(this.vector.length);
+			int coordinate = random.nextInt(2);
 			int mutationValue = random.nextInt(3) - random.nextInt(3);
-			result.vector[index] += mutationValue;
+			result.vector[index][coordinate] += mutationValue;
 
 			return result;
 		}
@@ -114,35 +115,42 @@ public class Demo {
 		 * created using any of crossover strategy
 		 */
 		@Override
-		public List<MyVector> crossover(MyVector other) {
-			MyVector thisClone = this.clone();
-			MyVector otherClone = other.clone();
+		public List<Pattern> crossover(Pattern other) {
+			Pattern thisClone = this.clone();
+			Pattern otherClone = other.clone();
 
 			// one point crossover
 			int index = random.nextInt(this.vector.length - 1);
 			for (int i = index; i < this.vector.length; i++) {
-				int tmp = thisClone.vector[i];
-				thisClone.vector[i] = otherClone.vector[i];
-				otherClone.vector[i] = tmp;
+				int tmp = thisClone.vector[i][i];
+				thisClone.vector[i][i] = otherClone.vector[i][i];
+				otherClone.vector[i][i] = tmp;
 			}
 
 			return Arrays.asList(thisClone, otherClone);
 		}
 
 		@Override
-		protected MyVector clone() {
-			MyVector clone = new MyVector();
+		protected Pattern clone() {
+			Pattern clone = new Pattern();
 			System.arraycopy(this.vector, 0, clone.vector, 0, this.vector.length);
 			return clone;
 		}
 
-		public int[] getVector() {
+		public int[][] getVector() {
 			return this.vector;
 		}
 
 		@Override
 		public String toString() {
-			return Arrays.toString(this.vector);
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0; i < len; i++) {
+				sb.append(this.vector[i][0]);   //x coordinate
+				sb.append(" ");
+				sb.append(this.vector[i][1]);   //y coordinate
+				if(i != len-1)  sb.append(", ");
+			}
+			return sb.toString();
 		}
 	}
 
@@ -150,27 +158,28 @@ public class Demo {
 	 * Fitness function, which calculates difference between chromosomes vector
 	 * and target vector
 	 */
-	public static class MyVectorFitness implements Fitness<MyVector, Double> {
+	public static class PatternFitness implements Fitness<Pattern, Long> {
 
-		private final int[] target =  new int[1000];
-
+//		private final int[] target =  new int[1000];
 
 		@Override
-		public Double calculate(MyVector chromosome) {
-			for(int i=0;i<target.length/2;i=i+2){
-                target[i]=1;
-                target[i+1]=0;
-			}
-			double delta = 0;
-			int[] v = chromosome.getVector();
-			for (int i = 0; i < 1000; i++) {
-				delta += this.sqr(v[i] - this.target[i]);
-			}
-			return delta;
+		public Long calculate(Pattern chromosome) {
+//			for(int i=0;i<target.length/2;i=i+2){
+//                target[i]=1;
+//                target[i+1]=0;
+//			}
+//			double delta = 0;
+//			int[] v = chromosome.getVector();
+//			for (int i = 0; i < 1000; i++) {
+//				delta += this.sqr(v[i] - this.target[i]);
+//			}
+//			return delta;
+			Long generation = Game.run(chromosome.toString());
+			return generation;
 		}
 
-		private double sqr(double x) {
-			return x * x;
-		}
+//		private double sqr(double x) {
+//			return x * x;
+//		}
 	}
 }
