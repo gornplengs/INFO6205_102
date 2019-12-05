@@ -27,7 +27,7 @@ import edu.neu.coe.info6205.life.base.Game;
 public class Demo {
 
 	public static void main(String[] args) {
-		Population<Pattern> population = createInitialPopulation(1000);
+		Population<Pattern> population = createInitialPopulation(5);
 		Fitness<Pattern, Long> fitness = new PatternFitness();
 		GeneticAlgorithm<Pattern, Long> ga = new GeneticAlgorithm<>(population, fitness);
 		addListener(ga);
@@ -42,7 +42,7 @@ public class Demo {
 		Population<Pattern> population = new Population<>();
 		Pattern base = new Pattern();
 		Random random = new Random();
-		int coordinateRange = 20;
+		int coordinateRange = 10;
 		for (int i = 0; i < populationSize; i++) {
 			for(int j = 0; j < base.len; j++) {
 				base.vector[j][0] = random.nextInt(coordinateRange);
@@ -89,7 +89,7 @@ public class Demo {
 	public static class Pattern implements Chromosome<Pattern>, Cloneable {
 
 		private static final Random random = new Random();
-		int len = 9;
+		int len = 50;
 		private final int[][] vector = new int[len][2];
 
 		/**
@@ -103,7 +103,7 @@ public class Demo {
 			// and increase or decrease it on small value
 			int index = random.nextInt(this.vector.length);
 			int coordinate = random.nextInt(2);
-			int mutationValue = random.nextInt(3) - random.nextInt(3);
+			int mutationValue = Math.abs(random.nextInt(3) - random.nextInt(3));
 			result.vector[index][coordinate] += mutationValue;
 
 			return result;

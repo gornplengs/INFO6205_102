@@ -67,15 +67,19 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
 		Population<C> newPopulation = new Population<C>();
-		this.setParentChromosomesSurviveCount(parentPopulationSize);
-		parentPopulationSize = this.parentChromosomesSurviveCount;
+		//this.setParentChromosomesSurviveCount(parentPopulationSize);
+		//parentPopulationSize = this.parentChromosomesSurviveCount;
 
-		for (int i = 0; i < this.parentChromosomesSurviveCount; i++) {  //&& i < parentPopulationSize
+		for (int i = 0; i < parentPopulationSize; i++) {  //&& i < parentPopulationSize
 			newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
 		}
+//		for (int i = 0; i < this.parentChromosomesSurviveCount; i++) {  //&& i < parentPopulationSize
+//			newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
+//		}
 
 		Random random = new Random();
-		int range = random.nextInt((int) (parentPopulationSize*0.01));
+		//System.out.println(this.parentChromosomesSurviveCount);
+		int range = random.nextInt(parentPopulationSize*0.01 > 1 ? (int) (parentPopulationSize * 0.01) : 1);
 		for(int i = 0; i < range; i++) {
 			int mutateIndex = random.nextInt(parentPopulationSize);
 			C chromosome = this.population.getChromosomeByIndex(mutateIndex);
@@ -83,12 +87,6 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 			newPopulation.setChromosomeByIndex(mutateIndex, mutated);
 		}
 
-//		C otherChromosome = this.population.getRandomChromosome();
-//		List<C> crossovered = chromosome.crossover(otherChromosome);
-//		newPopulation.addChromosome(mutated);
-//		for (C c : crossovered) {
-//			newPopulation.addChromosome(c);
-//		}
 
 		newPopulation.sortPopulationByFitness(this.chromosomesComparator);
 		//newPopulation.trim(parentPopulationSize);
