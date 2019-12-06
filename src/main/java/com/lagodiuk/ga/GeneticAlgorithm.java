@@ -24,6 +24,8 @@ public class GeneticAlgorithm {
 	private Population population;
 	private boolean terminate = false;
 	private int iteration = 0;
+
+
 	// listeners of genetic algorithm iterations (handle callback afterwards)
 	// private final List<IterationListener> iterationListeners = new LinkedList<>();
 	// private final IterationListener iterationListener = new IterationListener();
@@ -61,7 +63,8 @@ public class GeneticAlgorithm {
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
-	public void evolve() {
+	public Population evolve() {
+
 		int parentPopulationSize = this.population.getSize();
 
 		if(parentPopulationSize > 1){
@@ -89,8 +92,10 @@ public class GeneticAlgorithm {
 			//4.replace old population
 			this.population = newPopulation;
 			newPopulation.sortPopulationByFitness(this.chromosomesComparator);
+			return newPopulation;
 		}else{
-          	return;
+			Population wu = new Population();
+          	return wu ;
 		}
 
 	}
@@ -114,6 +119,7 @@ public class GeneticAlgorithm {
 	}
 
 	public Chromosome getBest() {
+
 		return this.population.getChromosomeByIndex(0);
 	}
 

@@ -32,7 +32,7 @@ public class Demo {
 	 * The simplest strategy for creating initial population <br/>
 	 * in real life it could be more complex
 	 */
-	private static Population createInitialPopulation(int populationSize) {
+	public static Population createInitialPopulation(int populationSize) {
 		Population population = new Population();
 		Random random = new Random();
 		int coordinateRange = 10;
