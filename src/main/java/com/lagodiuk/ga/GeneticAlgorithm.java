@@ -20,7 +20,7 @@ import java.util.*;
 public class GeneticAlgorithm {
 	// private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
 	private Double SURVIVE_RATE = 0.5;
-
+	int countss;
 	private final Fitness fitnessFunc;
 	private Population population;
 	private boolean terminate = false;
@@ -64,7 +64,8 @@ public class GeneticAlgorithm {
 
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
-		if(parentPopulationSize > 1){
+
+		if(parentPopulationSize >1){
 			Population newPopulation = new Population();
 			int newPopulationSize = (int) (parentPopulationSize*this.SURVIVE_RATE);
 
@@ -75,7 +76,8 @@ public class GeneticAlgorithm {
 			for (int i = 0; i < newPopulationSize; i++) {  //&& i < parentPopulationSize
 				newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
 			}
-
+			countss++;
+			System.out.println("I am here________"+countss++);
 			//3.mutate
 			Random random = new Random();
 			int range = random.nextInt(Math.max(newPopulationSize, 1));
@@ -89,16 +91,19 @@ public class GeneticAlgorithm {
 			//4.replace old population
 			this.population = newPopulation;
 			newPopulation.sortPopulationByFitness(this.chromosomesComparator);
+		}else{
+          return;
 		}
 
 	}
 
 	public void evolve(int count) {
 		final IterationListener iterationListener = new IterationListener(count);
-		this.terminate = false;
-
+		//this.terminate = false;
+		int parentPopulationSize = this.population.getSize();
 		for (int i = 0; i < count; i++) {
-			if (this.terminate)  break;
+			//if (this.terminate)  break;
+			if(parentPopulationSize==1) break;
 			this.evolve();
 			this.iteration = i;
 

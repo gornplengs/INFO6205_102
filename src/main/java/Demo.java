@@ -24,7 +24,8 @@ public class Demo {
 		Population population = createInitialPopulation(240);
 		Fitness fitnessFunc = new Fitness();
 		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc);
-		ga.evolve(5);
+
+		ga.evolve(10);
 	}
 
 	/**
