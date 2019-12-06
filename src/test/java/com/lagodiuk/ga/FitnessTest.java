@@ -14,7 +14,7 @@ public class FitnessTest {
         c1.addPairs(0,0,0);
         c1.addPairs(1,1,0);
 
-        Chromosome c2 = new Chromosome();
+        Chromosome c2 = new Chromosome(7);
         c2.addPairs(0,1,3);
         c2.addPairs(1,2,4);
         c2.addPairs(2,3,4);

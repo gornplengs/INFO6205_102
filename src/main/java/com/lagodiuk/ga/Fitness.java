@@ -32,8 +32,8 @@ public class Fitness {
 	 */
 	public Long calculate(Chromosome chromosome) {
 		Long generation = Game.run(chromosome.toString());
-		System.out.println(generation);
-		//if(Game.gameMatch)  generation = Long.valueOf(Game.MaxGenerations);
+		//System.out.println(generation);
+		if(Game.gameMatch)  generation = Long.valueOf(Game.MaxGenerations);
 		return generation;
 	}
 
