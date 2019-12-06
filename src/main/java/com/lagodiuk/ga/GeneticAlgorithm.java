@@ -18,7 +18,6 @@ package com.lagodiuk.ga;
 import java.util.*;
 
 public class GeneticAlgorithm {
-
 	// private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
 	private Double SURVIVE_RATE = 0.5;
 
@@ -27,9 +26,7 @@ public class GeneticAlgorithm {
 	private boolean terminate = false;
 	private int iteration = 0;
 	// listeners of genetic algorithm iterations (handle callback afterwards)
-	// private final List<IterartionListener<C, T>> iterationListeners = new LinkedList<IterartionListener<C, T>>();
-	// number of parental chromosomes, which survive (and move to new population)
-
+	private final List<IterationListener> iterationListeners = new LinkedList<>();
 
 	private class ChromosomesComparator implements Comparator<Chromosome> {
 		private final Map<Chromosome, Long> cache = new WeakHashMap<>();
@@ -97,15 +94,17 @@ public class GeneticAlgorithm {
 		this.terminate = false;
 
 		for (int i = 0; i < count; i++) {
-			if (this.terminate) {
-				break;
-			}
+			if (this.terminate)  break;
 			this.evolve();
 			this.iteration = i;
-			for (IterartionListener<C, T> l : this.iterationListeners) {
+			for (IterationListener l : this.iterationListeners) {
 				l.update(this);
 			}
 		}
+	}
+
+	public Chromosome getBest() {
+		return this.population.getChromosomeByIndex(0);
 	}
 
 	public int getIteration() {
@@ -120,25 +119,21 @@ public class GeneticAlgorithm {
 //		return this.population;
 //	}
 
-	public Chromosome getBest() {
-		return this.population.getChromosomeByIndex(0);
-	}
+//	public Chromosome getWorst() {
+//		return this.population.getChromosomeByIndex(this.population.getSize() - 1);
+//	}
 
-	public Chromosome getWorst() {
-		return this.population.getChromosomeByIndex(this.population.getSize() - 1);
-	}
-
-	public int getParentChromosomesSurviveCount() {
-		return this.parentChromosomesSurviveCount;
-	}
-
-	public void addIterationListener(IterartionListener<C, T> listener) {
+//	public int getParentChromosomesSurviveCount() {
+//		return this.parentChromosomesSurviveCount;
+//	}
+//
+	public void addIterationListener(IterationListener listener) {
 		this.iterationListeners.add(listener);
 	}
-
-	public void removeIterationListener(IterartionListener<C, T> listener) {
-		this.iterationListeners.remove(listener);
-	}
+//
+//	public void removeIterationListener(IterartionListener<C, T> listener) {
+//		this.iterationListeners.remove(listener);
+//	}
 
 	public Long fitness(Chromosome chromosome) {
 		return this.chromosomesComparator.fit(chromosome);

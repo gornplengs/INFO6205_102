@@ -52,9 +52,9 @@ public class Population {
 	/**
 	 * shortening population till specific number
 	 */
-	public void trim(int len) {
-		this.chromosomes = this.chromosomes.subList(0, len);
-	}
+//	public void trim(int len) {
+//		this.chromosomes = this.chromosomes.subList(0, len);
+//	}
 
 //	@Override
 //	public Iterator<String> iterator() {

@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
-import com.lagodiuk.ga.Chromosome;
-import com.lagodiuk.ga.Fitness;
-import com.lagodiuk.ga.GeneticAlgorithm;
-import com.lagodiuk.ga.IterartionListener;
-import com.lagodiuk.ga.Population;
-import edu.neu.coe.info6205.life.base.Game;
+import com.lagodiuk.ga.*;
+import com.lagodiuk.ga.IterationListener;
+
 
 public class Demo {
 
@@ -58,27 +53,12 @@ public class Demo {
 	/**
 	 * After each iteration Genetic algorithm notifies listener
 	 */
-	private static void addListener(GeneticAlgorithm<Chromosome, Long> ga) {
+	private static void addListener(GeneticAlgorithm ga) {
 		// just for pretty print
 		System.out.println(String.format("%s\t%s\t%s", "iter", "generation", "chromosome"));
 
 		// Lets add listener, which prints best chromosome after each iteration
-		ga.addIterationListener(new IterartionListener<Chromosome, Long>() {
-			private final double threshold = 1e-5;
-
-			@Override
-			public void update(GeneticAlgorithm<Chromosome, Long> ga) {
-				Chromosome best = ga.getBest();
-				double bestFit = ga.fitness(best);
-				int iteration = ga.getIteration();
-
-				// Listener prints best achieved solution
-				System.out.println(String.format("%s\t%s\t%s", iteration, bestFit, best));
-				// If fitness is satisfying - we can stop Genetic algorithm
-				if (bestFit < this.threshold)  ga.terminate();
-
-			}
-		}
+		ga.addIterationListener(new IterationListener());
 	}
 }
 
