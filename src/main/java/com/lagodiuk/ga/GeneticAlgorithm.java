@@ -26,7 +26,7 @@ public class GeneticAlgorithm {
 	private boolean terminate = false;
 	private int iteration = 0;
 	// listeners of genetic algorithm iterations (handle callback afterwards)
-//	private final List<IterationListener> iterationListeners = new LinkedList<>();
+	// private final List<IterationListener> iterationListeners = new LinkedList<>();
 	// private final IterationListener iterationListener = new IterationListener();
 
 	private class ChromosomesComparator implements Comparator<Chromosome> {
@@ -70,6 +70,7 @@ public class GeneticAlgorithm {
 
 			//1.sort old population by fitness
 			this.population.sortPopulationByFitness(this.chromosomesComparator);
+
 			//2.add survive population to new population
 			for (int i = 0; i < newPopulationSize; i++) {  //&& i < parentPopulationSize
 				newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
@@ -100,9 +101,7 @@ public class GeneticAlgorithm {
 			if (this.terminate)  break;
 			this.evolve();
 			this.iteration = i;
-//			for (IterationListener l : this.iterationListeners) {
-//				l.update(this);
-//			}
+
 			iterationListener.update(this);
 		}
 		iterationListener.printResult();
@@ -115,33 +114,9 @@ public class GeneticAlgorithm {
 		return this.population.getChromosomeByIndex(0);
 	}
 
-	public int getIteration() {
-		return this.iteration;
-	}
-
 	public void terminate() {
 		this.terminate = true;
 	}
-
-//	public Population<C> getPopulation() {
-//		return this.population;
-//	}
-
-//	public Chromosome getWorst() {
-//		return this.population.getChromosomeByIndex(this.population.getSize() - 1);
-//	}
-
-//	public int getParentChromosomesSurviveCount() {
-//		return this.parentChromosomesSurviveCount;
-//	}
-//
-//	public void addIterationListener(IterationListener listener) {
-//		this.iterationListeners.add(listener);
-//	}
-//
-//	public void removeIterationListener(IterationListener<C, T> listener) {
-//		this.iterationListeners.remove(listener);
-//	}
 
 	public Long fitness(Chromosome chromosome) {
 		return this.chromosomesComparator.fit(chromosome);

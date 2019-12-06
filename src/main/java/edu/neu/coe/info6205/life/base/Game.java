@@ -69,10 +69,11 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		public static final Map<Game, Long> generations = new HashMap<>();
 
 		public static void main(String[] args) {
-				String patternName = args.length > 0 ? args[0] : "Glider1";
+				String patternName = args.length > 0 ? args[0] : "Blip2";
 				System.out.println("Game of Life with starting pattern: " + patternName);
 				final String pattern = Library.get(patternName);
-				run(pattern);
+				Long g = run(pattern);
+				System.out.println("generation " + g);
 		}
 
 		public static Long run(String pattern) {
@@ -135,6 +136,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 						else
 								return false;
 				}
+				gameMatch = true;
 				return true;
 		}
 
@@ -167,6 +169,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		private boolean testTerminationPredicate(Predicate<Game> predicate, String message) {
 				if (predicate.test(this)) {
 						System.out.println("Terminating due to: " + message);
+//						gameMatch = true;
 						return true;
 				}
 				return false;
@@ -176,4 +179,5 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		private final Game previous;
 		private final BiConsumer<Long, Group> monitor;
 		private final long generation;
+		public static boolean gameMatch = false;
 }

@@ -20,9 +20,20 @@ import java.util.List;
 import java.util.Random;
 
 public class Chromosome implements Cloneable{
-	private static final int DEFAULT_NUMBER_OF_COORDINATE_PAIRS = 10;
-	private int[][] pairs = new int[DEFAULT_NUMBER_OF_COORDINATE_PAIRS][2];
+	//private static final int DEFAULT_NUMBER_OF_COORDINATE_PAIRS = 10;
+	private int numberOfPairs;
+	private int[][] pairs;
 	private final Random random = new Random();
+
+	public Chromosome() {
+		numberOfPairs = random.nextInt(10);
+		pairs = new int[numberOfPairs][2];
+	}
+
+	public Chromosome(int number) {
+		this.numberOfPairs = number;
+		pairs = new int[numberOfPairs][2];
+	}
 
 	/**
 	 * Returns clone of current chromosome, which is mutated a bit
@@ -44,7 +55,7 @@ public class Chromosome implements Cloneable{
 	}
 
 	public int getNumberOfPairs() {
-		return DEFAULT_NUMBER_OF_COORDINATE_PAIRS;
+		return numberOfPairs;
 	}
 
 	/**
@@ -76,11 +87,11 @@ public class Chromosome implements Cloneable{
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < DEFAULT_NUMBER_OF_COORDINATE_PAIRS; i++) {
+		for(int i = 0; i < numberOfPairs; i++) {
 			sb.append(this.pairs[i][0]);   //x coordinate
 			sb.append(" ");
 			sb.append(this.pairs[i][1]);   //y coordinate
-			if(i != DEFAULT_NUMBER_OF_COORDINATE_PAIRS-1)  sb.append(", ");
+			if(i != numberOfPairs-1)  sb.append(", ");
 		}
 		return sb.toString();
 	}
