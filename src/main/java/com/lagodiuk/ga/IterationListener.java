@@ -1,5 +1,7 @@
 package com.lagodiuk.ga;
 
+import edu.neu.coe.info6205.life.base.Game;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +15,27 @@ public class IterationListener {
     public IterationListener(int iteration) {
         this.iteration = iteration;
     }
+
+    public IterationListener() {
+
+    }
+
     public void update(GeneticAlgorithm ga) {
 
         Chromosome best = ga.getBest();
         Long bestFitness = ga.fitness(best);
         int population = ga.getPopulation();
-        double score =  (double)(ga.fitness(best))/1000;
+
+        double score = expression((double)(ga.fitness(best))/1000);
         cList.add(best);
         fList.add(bestFitness);
         eList.add(score);
         pList.add(population);
+    }
+
+    public double expression(double m) {
+        double score =  m/1000;
+        return score;
     }
 
     public void printResult() {
