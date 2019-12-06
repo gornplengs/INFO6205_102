@@ -60,6 +60,23 @@ public class Population {
 	/**
 	 * shortening population till specific number
 	 */
+
+	public static Population createInitialPopulation(int populationSize) {
+		Population population = new Population();
+		Random random = new Random();
+		int coordinateRange = 10;
+		for (int i = 0; i < populationSize; i++) {
+			Chromosome base = new Chromosome();
+			for(int j = 0; j < base.getNumberOfPairs(); j++) {
+				int x = random.nextInt(coordinateRange);
+				int y = random.nextInt(coordinateRange);
+				base.addPairs(j, x, y);
+			}
+			population.addChromosome(base);
+		}
+		return population;
+	}
+}
 //	public void trim(int len) {
 //		this.chromosomes = this.chromosomes.subList(0, len);
 //	}
@@ -69,4 +86,3 @@ public class Population {
 //		return this.chromosomes.iterator();
 //	}
 
-}
