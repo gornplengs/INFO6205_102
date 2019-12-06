@@ -66,7 +66,7 @@ public class GeneticAlgorithm {
 
 		if(parentPopulationSize > 1){
 			Population newPopulation = new Population();
-			int newPopulationSize = this.selectSurvive(parentPopulationSize, this.SURVIVE_RATE);
+			int newPopulationSize = (int) (parentPopulationSize * SURVIVE_RATE);
 
 			//1.sort old population by fitness
 			this.population.sortPopulationByFitness(this.chromosomesComparator);
@@ -75,12 +75,7 @@ public class GeneticAlgorithm {
 			for (int i = 0; i < newPopulationSize; i++) {  //&& i < parentPopulationSize
 				newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
 			}
-<<<<<<< HEAD
 
-=======
-			countss++;
-			//System.out.println("I am here________"+countss++);
->>>>>>> ebfc858887bcc94e7fbaaa3eb6de58bf41a27125
 			//3.mutate
 			Random random = new Random();
 			int range = random.nextInt(Math.max(newPopulationSize, 1));
@@ -95,7 +90,7 @@ public class GeneticAlgorithm {
 			this.population = newPopulation;
 			newPopulation.sortPopulationByFitness(this.chromosomesComparator);
 		}else{
-          return;
+          	return;
 		}
 
 	}
@@ -122,9 +117,9 @@ public class GeneticAlgorithm {
 		return this.population.getChromosomeByIndex(0);
 	}
 
-	public int selectSurvive(int populationSize, double rate) {
-		return (int) (populationSize*rate);
-	}
+//	public int selectSurvive(int populationSize, double rate) {
+//		return (int) (populationSize*rate);
+//	}
 
 	public void terminate() {
 		this.terminate = true;

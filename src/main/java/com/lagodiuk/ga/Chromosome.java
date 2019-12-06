@@ -27,6 +27,9 @@ public class Chromosome implements Cloneable{
 
 	public Chromosome() {
 		numberOfPairs = random.nextInt(10);
+		while(numberOfPairs == 0) {
+			numberOfPairs = random.nextInt(10);
+		}
 		pairs = new int[numberOfPairs][2];
 	}
 
@@ -80,10 +83,11 @@ public class Chromosome implements Cloneable{
 
 	@Override
 	protected Chromosome clone() {
-		Chromosome clone = new Chromosome();
+		Chromosome clone = new Chromosome(this.pairs.length);
 		System.arraycopy(this.pairs, 0, clone.pairs, 0, this.pairs.length);
 		return clone;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
