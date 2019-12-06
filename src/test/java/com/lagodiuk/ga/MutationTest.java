@@ -2,12 +2,12 @@ package com.lagodiuk.ga;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-public class FitnessTest {
+public class MutationTest {
 
     @Test
-    public void testCalculate() {
+    public void testMutate() {
         Chromosome c1 = new Chromosome(2);
         c1.addPairs(0,0,0);
         c1.addPairs(1,1,0);
@@ -21,11 +21,11 @@ public class FitnessTest {
         c2.addPairs(5,3,1);
         c2.addPairs(6,2,2);
 
-        Fitness fitness = new Fitness();
-        int g1 = Math.toIntExact(fitness.calculate(c1));
-        int g2 = Math.toIntExact(fitness.calculate(c2));
+        Chromosome c3 = c1.mutate();
+        Chromosome c4 = c2.mutate();
 
-        assertEquals(1, g1);
-        assertEquals(1000, g2);
+        assertNotEquals(c1, c3);
+        assertNotEquals(c2, c4);
+
     }
 }
