@@ -1,0 +1,18 @@
+Index: src/main/java/com/lagodiuk/ga/IterationListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.lagodiuk.ga;\r\n\r\npublic class IterationListener {\r\n    private final double threshold = 1e-5;\r\n\r\n    public void update(GeneticAlgorithm ga) {\r\n        int iteration = ga.getIteration();\r\n        Chromosome best = ga.getBest();\r\n        Long bestFitness = ga.fitness(best);\r\n\r\n\r\n        // Listener prints best achieved solution\r\n        System.out.println(String.format(\"%s\\t%s\\t%s\", iteration, bestFitness, best));\r\n        // If fitness is satisfying - we can stop Genetic algorithm\r\n        if (bestFitness < this.threshold)  ga.terminate();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/lagodiuk/ga/IterationListener.java	(revision 9a0139a39e5bc0fe66e81f126c2808b70ed5f1e7)
++++ src/main/java/com/lagodiuk/ga/IterationListener.java	(date 1575602016990)
+@@ -8,7 +8,7 @@
+         Chromosome best = ga.getBest();
+         Long bestFitness = ga.fitness(best);
+ 
+-
++//ssss
+         // Listener prints best achieved solution
+         System.out.println(String.format("%s\t%s\t%s", iteration, bestFitness, best));
+         // If fitness is satisfying - we can stop Genetic algorithm

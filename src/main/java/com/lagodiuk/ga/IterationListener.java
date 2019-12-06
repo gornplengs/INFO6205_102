@@ -9,7 +9,7 @@ public class IterationListener {
     List<Chromosome> cList = new ArrayList<>();
     List<Long> fList = new ArrayList<>();
     List<Integer> pList = new ArrayList<>();
-
+    List<Double> eList= new ArrayList<>();
     public IterationListener(int iteration) {
         this.iteration = iteration;
     }
@@ -18,17 +18,18 @@ public class IterationListener {
         Chromosome best = ga.getBest();
         Long bestFitness = ga.fitness(best);
         int population = ga.getPopulation();
-
+        double score =  (double)(ga.fitness(best))/1000;
         cList.add(best);
         fList.add(bestFitness);
+        eList.add(score);
         pList.add(population);
     }
 
     public void printResult() {
-        System.out.println(String.format("%s\t%s\t%s\t%s", "iter", "population", "generation", "chromosome"));
+        System.out.println(String.format("%s\t%s\t%s\t%s\t%s", "iter", "population", "generation", "score", "chromosome"));
         // Listener prints best achieved solution
         for (int i = 0; i<cList.size(); i++) {
-            System.out.println(String.format("%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i), cList.get(i)));
+            System.out.println(String.format("%s\t%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i),eList.get(i) ,cList.get(i)));
         }
 
         // If fitness is satisfying - we can stop Genetic algorithm

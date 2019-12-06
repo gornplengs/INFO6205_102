@@ -21,7 +21,7 @@ import com.lagodiuk.ga.*;
 public class Demo {
 
 	public static void main(String[] args) {
-		Population population = createInitialPopulation(120);
+		Population population = createInitialPopulation(240);
 		Fitness fitnessFunc = new Fitness();
 		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc);
 		ga.evolve(5);
