@@ -16,7 +16,7 @@
 import java.util.Random;
 
 import com.lagodiuk.ga.*;
-
+import com.lagodiuk.ga.Main;
 
 public class Demo {
 
@@ -24,7 +24,6 @@ public class Demo {
 		Population population = createInitialPopulation(240);
 		Fitness fitnessFunc = new Fitness();
 		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc);
-
 		ga.evolve(10);
 	}
 

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.lagodiuk.ga.Main">
+  <grid id="27dc6" binding="InputPanel" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="602" height="336"/>
+    </constraints>
+    <properties>
+      <focusable value="false"/>
+      <preferredSize width="1000" height="1000"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="cf66e" class="javax.swing.JLabel" binding="surviveLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="1fa17"/>
+          <text value="Survive Rate"/>
+        </properties>
+      </component>
+      <component id="1fa17" class="javax.swing.JTextField" binding="surviveField">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Default : 0.5"/>
+        </properties>
+      </component>
+      <component id="2af7d" class="javax.swing.JTextField" binding="pairNumField">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Default : random"/>
+        </properties>
+      </component>
+      <component id="7e542" class="javax.swing.JLabel" binding="pairNumLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="2af7d"/>
+          <text value="Length of Pattern"/>
+        </properties>
+      </component>
+      <component id="17da7" class="javax.swing.JLabel" binding="chroNumLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="1aefb"/>
+          <text value="Number of Pattern"/>
+        </properties>
+      </component>
+      <component id="1aefb" class="javax.swing.JTextField" binding="chroNumField">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Default : 1000"/>
+        </properties>
+      </component>
+      <component id="93ca8" class="javax.swing.JLabel" binding="populationLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="5736d"/>
+          <text value="Population Size"/>
+        </properties>
+      </component>
+      <component id="5736d" class="javax.swing.JTextField" binding="populationField">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value=""/>
+          <toolTipText value="Default : 240"/>
+        </properties>
+      </component>
+      <component id="c8a7a" class="javax.swing.JLabel" binding="evolveLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="9d14b"/>
+          <text value="Evolve Count"/>
+        </properties>
+      </component>
+      <component id="9d14b" class="javax.swing.JTextField" binding="evolveField">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Default : 5"/>
+        </properties>
+      </component>
+      <component id="82c17" class="javax.swing.JTextField" binding="rangeField">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Default : 10"/>
+        </properties>
+      </component>
+      <component id="be578" class="javax.swing.JButton" binding="submitBTN">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="GO"/>
+        </properties>
+      </component>
+      <component id="8f485" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Coordinate Range"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

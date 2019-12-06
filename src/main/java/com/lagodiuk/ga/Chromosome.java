@@ -15,8 +15,6 @@
  ******************************************************************************/
 package com.lagodiuk.ga;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Chromosome implements Cloneable{

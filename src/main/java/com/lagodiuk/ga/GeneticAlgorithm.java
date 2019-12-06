@@ -61,6 +61,14 @@ public class GeneticAlgorithm {
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
+	public GeneticAlgorithm(Population population, Fitness fitnessFunc, double surviveRate) {
+		this.population = population;
+		this.fitnessFunc = fitnessFunc;
+		this.chromosomesComparator = new ChromosomesComparator();
+		this.SURVIVE_RATE = surviveRate;
+		//this.population.sortPopulationByFitness(this.chromosomesComparator);
+	}
+
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
 
