@@ -77,7 +77,7 @@ public class GeneticAlgorithm {
 				newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
 			}
 			countss++;
-			System.out.println("I am here________"+countss++);
+			//System.out.println("I am here________"+countss++);
 			//3.mutate
 			Random random = new Random();
 			int range = random.nextInt(Math.max(newPopulationSize, 1));
