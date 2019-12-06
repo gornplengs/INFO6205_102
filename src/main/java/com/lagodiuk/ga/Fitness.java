@@ -15,7 +15,13 @@
  ******************************************************************************/
 package com.lagodiuk.ga;
 
-public interface Fitness<C extends Chromosome<C>, T extends Comparable<T>> {
+import edu.neu.coe.info6205.life.base.Game;
+
+/**
+ * Fitness function, which calculates difference between chromosomes vector
+ * and target vector
+ */
+public class Fitness {
 
 	/**
 	 * Assume that chromosome1 is better than chromosome2 <br/>
@@ -24,6 +30,10 @@ public interface Fitness<C extends Chromosome<C>, T extends Comparable<T>> {
 	 * So the following condition must be true <br/>
 	 * fit1.compareTo(fit2) <= 0 <br/>
 	 */
-	T calculate(C chromosome);
+	public Long calculate(Chromosome chromosome) {
+		Long generation = Game.run(chromosome.toString());
+		//System.out.println("use calculate");
+		return generation;
+	}
 
 }

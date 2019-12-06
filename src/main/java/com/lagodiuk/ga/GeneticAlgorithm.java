@@ -17,33 +17,33 @@ package com.lagodiuk.ga;
 
 import java.util.*;
 
-public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
+public class GeneticAlgorithm {
 
-	private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
-	private Double parentChromosomesSurviveRate = 0.5;
-	private final Fitness<C, T> fitnessFunc;
-	private Population<C> population;
-	// listeners of genetic algorithm iterations (handle callback afterwards)
-	private final List<IterartionListener<C, T>> iterationListeners = new LinkedList<IterartionListener<C, T>>();
+	// private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
+	private Double SURVIVE_RATE = 0.5;
+
+	private final Fitness fitnessFunc;
+	private Population population;
 	private boolean terminate = false;
-	// number of parental chromosomes, which survive (and move to new population)
-	private int parentChromosomesSurviveCount = ALL_PARENTAL_CHROMOSOMES;
 	private int iteration = 0;
+	// listeners of genetic algorithm iterations (handle callback afterwards)
+	// private final List<IterartionListener<C, T>> iterationListeners = new LinkedList<IterartionListener<C, T>>();
+	// number of parental chromosomes, which survive (and move to new population)
 
-	private class ChromosomesComparator implements Comparator<C> {
 
-		private final Map<C, T> cache = new WeakHashMap<C, T>();
+	private class ChromosomesComparator implements Comparator<Chromosome> {
+		private final Map<Chromosome, Long> cache = new WeakHashMap<>();
 
 		@Override
-		public int compare(C chr1, C chr2) {
-			T fit1 = this.fit(chr1);
-			T fit2 = this.fit(chr2);
+		public int compare(Chromosome chr1, Chromosome chr2) {
+			Long fit1 = this.fit(chr1);
+			Long fit2 = this.fit(chr2);
 			int ret = fit1.compareTo(fit2);
 			return ret;
 		}
 
-		public T fit(C chr) {
-			T fit = this.cache.get(chr);
+		public Long fit(Chromosome chr) {
+			Long fit = this.cache.get(chr);
 			if (fit == null) {
 				fit = GeneticAlgorithm.this.fitnessFunc.calculate(chr);
 				this.cache.put(chr, fit);
@@ -57,40 +57,40 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 	}
 	private final ChromosomesComparator chromosomesComparator;
 
-	public GeneticAlgorithm(Population<C> population, Fitness<C, T> fitnessFunc) {
+	public GeneticAlgorithm(Population population, Fitness fitnessFunc) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
 		this.chromosomesComparator = new ChromosomesComparator();
-		this.population.sortPopulationByFitness(this.chromosomesComparator);
+		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
-		Population<C> newPopulation = new Population<C>();
-		//this.setParentChromosomesSurviveCount(parentPopulationSize);
-		//parentPopulationSize = this.parentChromosomesSurviveCount;
+		if(parentPopulationSize > 1){
+			Population newPopulation = new Population();
+			int newPopulationSize = (int) (parentPopulationSize*this.SURVIVE_RATE);
 
-		for (int i = 0; i < parentPopulationSize; i++) {  //&& i < parentPopulationSize
-			newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
+			//1.sort old population by fitness
+			this.population.sortPopulationByFitness(this.chromosomesComparator);
+			//2.add survive population to new population
+			for (int i = 0; i < newPopulationSize; i++) {  //&& i < parentPopulationSize
+				newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
+			}
+
+			//3.mutate
+			Random random = new Random();
+			int range = random.nextInt(Math.max(newPopulationSize, 1));
+			for(int i = 0; i < range; i++) {
+				int mutateIndex = random.nextInt(parentPopulationSize);
+				Chromosome chromosome = this.population.getChromosomeByIndex(mutateIndex);
+				Chromosome mutated = chromosome.mutate();
+				newPopulation.setChromosomeByIndex(mutateIndex, mutated);
+			}
+
+			//4.replace old population
+			this.population = newPopulation;
 		}
-//		for (int i = 0; i < this.parentChromosomesSurviveCount; i++) {  //&& i < parentPopulationSize
-//			newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
-//		}
 
-		Random random = new Random();
-		//System.out.println(this.parentChromosomesSurviveCount);
-		int range = random.nextInt(parentPopulationSize*0.01 > 1 ? (int) (parentPopulationSize * 0.01) : 1);
-		for(int i = 0; i < range; i++) {
-			int mutateIndex = random.nextInt(parentPopulationSize);
-			C chromosome = this.population.getChromosomeByIndex(mutateIndex);
-			C mutated = chromosome.mutate();
-			newPopulation.setChromosomeByIndex(mutateIndex, mutated);
-		}
-
-
-		newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-		//newPopulation.trim(parentPopulationSize);
-		this.population = newPopulation;
 	}
 
 	public void evolve(int count) {
@@ -116,20 +116,16 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 		this.terminate = true;
 	}
 
-	public Population<C> getPopulation() {
-		return this.population;
-	}
+//	public Population<C> getPopulation() {
+//		return this.population;
+//	}
 
-	public C getBest() {
+	public Chromosome getBest() {
 		return this.population.getChromosomeByIndex(0);
 	}
 
-	public C getWorst() {
+	public Chromosome getWorst() {
 		return this.population.getChromosomeByIndex(this.population.getSize() - 1);
-	}
-
-	public void setParentChromosomesSurviveCount(int parentChromosomesCount) {
-		this.parentChromosomesSurviveCount = (int) (parentChromosomesCount * this.parentChromosomesSurviveRate);
 	}
 
 	public int getParentChromosomesSurviveCount() {
@@ -144,7 +140,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 		this.iterationListeners.remove(listener);
 	}
 
-	public T fitness(C chromosome) {
+	public Long fitness(Chromosome chromosome) {
 		return this.chromosomesComparator.fit(chromosome);
 	}
 

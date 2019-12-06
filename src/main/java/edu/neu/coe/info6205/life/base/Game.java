@@ -84,7 +84,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				Game game = new Game(generation, grid, null, groupMonitor);
 				while (!game.terminated()) {
 						generations.put(game, game.generation);
-						System.out.println(game.render());
+						//System.out.println(game.render());
 						game = game.generation(gridMonitor);
 				}
 				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");

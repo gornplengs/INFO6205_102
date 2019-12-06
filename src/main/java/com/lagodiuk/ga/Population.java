@@ -22,37 +22,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class Population<C extends Chromosome<C>> implements Iterable<C> {
+public class Population {
 
 	private static final int DEFAULT_NUMBER_OF_CHROMOSOMES = 1000;
-	private List<C> chromosomes = new ArrayList<C>(DEFAULT_NUMBER_OF_CHROMOSOMES);
+	private List<Chromosome> chromosomes = new ArrayList<>(DEFAULT_NUMBER_OF_CHROMOSOMES);
 	private final Random random = new Random();
 
-	public void addChromosome(C chromosome) {
+	public void addChromosome(Chromosome chromosome) {
 		this.chromosomes.add(chromosome);
+	}
+
+	public Chromosome getChromosomeByIndex(int index) {
+		return this.chromosomes.get(index);
+	}
+
+	public void setChromosomeByIndex(int index, Chromosome chromosome) {
+		this.chromosomes.set(index, chromosome);
 	}
 
 	public int getSize() {
 		return this.chromosomes.size();
 	}
 
-	public C getRandomChromosome() {
-		int numOfChromosomes = this.chromosomes.size();
-		// TODO improve random generator
-		// maybe use pattern strategy ?
-		int index = this.random.nextInt(numOfChromosomes);
-		return this.chromosomes.get(index);
-	}
-
-	public C getChromosomeByIndex(int index) {
-		return this.chromosomes.get(index);
-	}
-
-	public void setChromosomeByIndex(int index, C chromosome) {
-		this.chromosomes.set(index, chromosome);
-	}
-
-	public void sortPopulationByFitness(Comparator<C> chromosomesComparator) {
+	public void sortPopulationByFitness(Comparator<Chromosome> chromosomesComparator) {  //??
 		Collections.shuffle(this.chromosomes);
 		Collections.sort(this.chromosomes, chromosomesComparator);
 	}
@@ -64,9 +56,9 @@ public class Population<C extends Chromosome<C>> implements Iterable<C> {
 		this.chromosomes = this.chromosomes.subList(0, len);
 	}
 
-	@Override
-	public Iterator<C> iterator() {
-		return this.chromosomes.iterator();
-	}
+//	@Override
+//	public Iterator<String> iterator() {
+//		return this.chromosomes.iterator();
+//	}
 
 }
