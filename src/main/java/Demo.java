@@ -16,18 +16,15 @@
 import java.util.Random;
 
 import com.lagodiuk.ga.*;
-import com.lagodiuk.ga.IterationListener;
 
 
 public class Demo {
 
 	public static void main(String[] args) {
-		Population population = createInitialPopulation(5);
-		//System.out.println("!!!!!!!!!!!! " + population.);
+		Population population = createInitialPopulation(120);
 		Fitness fitnessFunc = new Fitness();
 		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc);
-		addListener(ga);
-		//ga.evolve(5);
+		ga.evolve(5);
 	}
 
 	/**
@@ -48,17 +45,6 @@ public class Demo {
 			population.addChromosome(base);
 		}
 		return population;
-	}
-
-	/**
-	 * After each iteration Genetic algorithm notifies listener
-	 */
-	private static void addListener(GeneticAlgorithm ga) {
-		// just for pretty print
-		System.out.println(String.format("%s\t%s\t%s", "iter", "generation", "chromosome"));
-
-		// Lets add listener, which prints best chromosome after each iteration
-		ga.addIterationListener(new IterationListener());
 	}
 }
 

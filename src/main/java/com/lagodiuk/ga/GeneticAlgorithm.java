@@ -26,7 +26,8 @@ public class GeneticAlgorithm {
 	private boolean terminate = false;
 	private int iteration = 0;
 	// listeners of genetic algorithm iterations (handle callback afterwards)
-	private final List<IterationListener> iterationListeners = new LinkedList<>();
+//	private final List<IterationListener> iterationListeners = new LinkedList<>();
+	// private final IterationListener iterationListener = new IterationListener();
 
 	private class ChromosomesComparator implements Comparator<Chromosome> {
 		private final Map<Chromosome, Long> cache = new WeakHashMap<>();
@@ -78,7 +79,7 @@ public class GeneticAlgorithm {
 			Random random = new Random();
 			int range = random.nextInt(Math.max(newPopulationSize, 1));
 			for(int i = 0; i < range; i++) {
-				int mutateIndex = random.nextInt(parentPopulationSize);
+				int mutateIndex = random.nextInt(newPopulationSize);
 				Chromosome chromosome = this.population.getChromosomeByIndex(mutateIndex);
 				Chromosome mutated = chromosome.mutate();
 				newPopulation.setChromosomeByIndex(mutateIndex, mutated);
@@ -86,23 +87,30 @@ public class GeneticAlgorithm {
 
 			//4.replace old population
 			this.population = newPopulation;
+			newPopulation.sortPopulationByFitness(this.chromosomesComparator);
 		}
 
 	}
 
 	public void evolve(int count) {
+		final IterationListener iterationListener = new IterationListener(count);
 		this.terminate = false;
 
 		for (int i = 0; i < count; i++) {
 			if (this.terminate)  break;
 			this.evolve();
 			this.iteration = i;
-			for (IterationListener l : this.iterationListeners) {
-				l.update(this);
-			}
+//			for (IterationListener l : this.iterationListeners) {
+//				l.update(this);
+//			}
+			iterationListener.update(this);
 		}
+		iterationListener.printResult();
 	}
 
+	public int getPopulation() {
+		return this.population.getSize();
+	}
 	public Chromosome getBest() {
 		return this.population.getChromosomeByIndex(0);
 	}
@@ -127,11 +135,11 @@ public class GeneticAlgorithm {
 //		return this.parentChromosomesSurviveCount;
 //	}
 //
-	public void addIterationListener(IterationListener listener) {
-		this.iterationListeners.add(listener);
-	}
+//	public void addIterationListener(IterationListener listener) {
+//		this.iterationListeners.add(listener);
+//	}
 //
-//	public void removeIterationListener(IterartionListener<C, T> listener) {
+//	public void removeIterationListener(IterationListener<C, T> listener) {
 //		this.iterationListeners.remove(listener);
 //	}
 
