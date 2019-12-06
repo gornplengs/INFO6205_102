@@ -28,10 +28,16 @@ public class IterationListener {
     public void printResult() {
         System.out.println(String.format("%s\t%s\t%s\t%s\t%s", "iter", "population", "generation", "score", "chromosome"));
         // Listener prints best achieved solution
-        for (int i = 0; i<cList.size(); i++) {
-            System.out.println(String.format("%s\t%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i),eList.get(i) ,cList.get(i)));
-        }
 
+
+        for (int i = 0; i<cList.size(); i++) {
+         if(pList.get(i)==1){
+             System.out.println(String.format("%s\t%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i), eList.get(i), cList.get(i)));
+             break;}
+
+                System.out.println(String.format("%s\t%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i), eList.get(i), cList.get(i)));
+
+        }
         // If fitness is satisfying - we can stop Genetic algorithm
         //if (bestFitness < this.threshold)  ga.terminate();
     }
