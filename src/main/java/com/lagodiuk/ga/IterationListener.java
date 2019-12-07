@@ -8,18 +8,26 @@ import java.util.List;
 public class IterationListener {
     private final double threshold = 1e-5;
     private int iteration;
-    List<Chromosome> cList = new ArrayList<>();
-    List<Long> fList = new ArrayList<>();
-    List<Integer> pList = new ArrayList<>();
-    List<Double> eList= new ArrayList<>();
+    List<Chromosome> cList;
+    List<Long> fList;
+    List<Integer> pList;
+    List<Double> eList;
+
     public IterationListener(int iteration) {
         this.iteration = iteration;
+        this.cList = new ArrayList<>();
+        this.fList = new ArrayList<>();
+        this.pList = new ArrayList<>();
+        this.eList = new ArrayList<>();
     }
 
     public IterationListener() {
-
+        this.iteration = 0;
+        this.cList = new ArrayList<>();
+        this.fList = new ArrayList<>();
+        this.pList = new ArrayList<>();
+        this.eList = new ArrayList<>();
     }
-
     public void update(GeneticAlgorithm ga) {
 
         Chromosome best = ga.getBest();

@@ -19,6 +19,9 @@ public class Main {
     private JTextField evolveField;
     private JLabel evolveLabel;
     private JTextField rangeField;
+    private JLabel resultHead;
+    private JLabel result;
+    private JTable table1;
 
     public int populationSize = 240;
     public double surviveRate = 0.5;
@@ -49,6 +52,11 @@ public class Main {
                 GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc, surviveRate);
                 ga.evolve(evolveCount);
 
+                IterationListener iterationListener = ga.getIterationListener();
+                int i = iterationListener.cList.size() - 1;
+                //resultHead.setText("Hello");
+                resultHead.setText(String.format("%s\t%s\t%s\t%s\t%s", "iteration", "population", "generation", "score", "chromosome"));
+                result.setText(String.format("%s\t%s\t%s\t%s\t%s", i, iterationListener.pList.get(i), iterationListener.fList.get(i), iterationListener.eList.get(i), iterationListener.cList.get(i)));
             }
         });
     }

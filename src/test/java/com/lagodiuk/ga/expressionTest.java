@@ -9,8 +9,8 @@ public class expressionTest {
     @Test
     public void expression( ) {
         double text = 100.00;
-        IterationListener test= new IterationListener();
-        double answer= test.expression(text);
+        IterationListener test = new IterationListener();
+        double answer = test.expression(text);
 
         assertEquals(0.1, answer,1e-15);
 

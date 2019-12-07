@@ -23,7 +23,8 @@ public class GeneticAlgorithm {
 	private final Fitness fitnessFunc;
 	private Population population;
 	private boolean terminate = false;
-	private int iteration = 0;
+	private int iteration;
+	final IterationListener iterationListener = new IterationListener(iteration);
 
 
 	// listeners of genetic algorithm iterations (handle callback afterwards)
@@ -63,7 +64,6 @@ public class GeneticAlgorithm {
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
-<<<<<<< HEAD
 	public GeneticAlgorithm(Population population, Fitness fitnessFunc, double surviveRate) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
@@ -72,11 +72,9 @@ public class GeneticAlgorithm {
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
-	public void evolve() {
-=======
 	public Population evolve() {
 
->>>>>>> 4110590ef77315b152a2caf52139e64ad3bae0bb
+
 		int parentPopulationSize = this.population.getSize();
 
 		if(parentPopulationSize > 1){
@@ -113,7 +111,7 @@ public class GeneticAlgorithm {
 	}
 
 	public void evolve(int count) {
-		final IterationListener iterationListener = new IterationListener(count);
+		this.iteration = count;
 		//this.terminate = false;
 		int parentPopulationSize = this.population.getSize();
 		for (int i = 0; i < count; i++) {
@@ -135,9 +133,13 @@ public class GeneticAlgorithm {
 		return this.population.getChromosomeByIndex(0);
 	}
 
-//	public int selectSurvive(int populationSize, double rate) {
-//		return (int) (populationSize*rate);
-//	}
+	public int getIteration() {
+		return iteration;
+	}
+
+	public IterationListener getIterationListener() {
+		return iterationListener;
+	}
 
 	public void terminate() {
 		this.terminate = true;
