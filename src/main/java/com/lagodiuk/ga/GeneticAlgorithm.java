@@ -119,6 +119,9 @@ public class GeneticAlgorithm {
 		iterationListener.printResult();
 	}
 
+	public Population getNewPopulation() {
+		return population;
+	}
 	public int getPopulation() {
 		return this.population.getSize();
 	}
