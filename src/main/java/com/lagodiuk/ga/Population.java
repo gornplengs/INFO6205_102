@@ -51,31 +51,15 @@ public class Population {
 		return this.chromosomes.size();
 	}
 
-	public void sortPopulationByFitness(Comparator<Chromosome> chromosomesComparator) {  //??
+	public void sortPopulationByFitness(Comparator<Chromosome> chromosomesComparator) {
 		Collections.shuffle(this.chromosomes);
 		Collections.sort(this.chromosomes, chromosomesComparator);
+		Collections.reverse(this.chromosomes);
 	}
-
+}
 	/**
 	 * shortening population till specific number
 	 */
-
-	public static Population createInitialPopulation(int populationSize) {
-		Population population = new Population();
-		Random random = new Random();
-		int coordinateRange = 10;
-		for (int i = 0; i < populationSize; i++) {
-			Chromosome base = new Chromosome(random);
-			for(int j = 0; j < base.getNumberOfPairs(); j++) {
-				int x = random.nextInt(coordinateRange);
-				int y = random.nextInt(coordinateRange);
-				base.addPairs(j, x, y);
-			}
-			population.addChromosome(base);
-		}
-		return population;
-	}
-}
 //	public void trim(int len) {
 //		this.chromosomes = this.chromosomes.subList(0, len);
 //	}

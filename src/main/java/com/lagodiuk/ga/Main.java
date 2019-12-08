@@ -15,7 +15,6 @@ public class Main {
     private JTextField pairNumField;
     private JLabel pairNumLabel;
     private JTextField chroNumField;
-    private JLabel chroNumLabel;
     private JTextField evolveField;
     private JLabel evolveLabel;
     private JTextField rangeField;
@@ -28,9 +27,9 @@ public class Main {
 
     public int populationSize = 240;
     public double surviveRate = 0.5;
-    public int numberOfPairs = 0;
+    public int numberOfPairs;  //1 + random.nextInt(50)
     public int numOfChromosome = 1000;
-    public int evolveCount = 5;
+    public int evolveCount = 7;
     public int coordinateRange = 10;
     public long seed;
     public Random random = new Random();
@@ -39,30 +38,30 @@ public class Main {
         submitBTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(seedField.getText() != null && !seedField.getText().isEmpty()) {
+                    seed = Long.parseLong(seedField.getText());
+                    random.setSeed(seed);
+                }
+                numberOfPairs = 1 + random.nextInt(50);
                 if(populationField.getText() != null && !populationField.getText().isEmpty())
                     populationSize = Integer.parseInt(populationField.getText());
                 if(surviveField.getText() != null && !surviveField.getText().isEmpty())
                     surviveRate = Double.parseDouble(surviveField.getText());
-                if(chroNumField.getText() != null && !chroNumField.getText().isEmpty())
-                    numOfChromosome = Integer.parseInt(chroNumField.getText());
                 if(evolveField.getText() != null && !evolveField.getText().isEmpty())
                     evolveCount = Integer.parseInt(evolveField.getText());
                 if(pairNumField.getText() != null && !pairNumField.getText().isEmpty())
                     numberOfPairs = Integer.parseInt(pairNumField.getText());
                 if(rangeField.getText() != null && !rangeField.getText().isEmpty())
                     coordinateRange = Integer.parseInt(rangeField.getText());
-                if(seedField.getText() != null && !seedField.getText().isEmpty()) {
-                    seed = Long.parseLong(seedField.getText());
-                    random.setSeed(seed);
-                }
 
-                Population population = createInitialPopulation(populationSize, numOfChromosome, coordinateRange, numberOfPairs, random);
+                Population population = createInitialPopulation(populationSize, coordinateRange, numberOfPairs, random);
                 Fitness fitnessFunc = new Fitness();
                 GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc, surviveRate, random);
                 ga.evolve(evolveCount);
 
                 IterationListener iterationListener = ga.getIterationListener();
-                int i = iterationListener.cList.size() - 1;
+                //int i = iterationListener.cList.size() - 1;
+                int i = evolveCount;
                 chromosome.setText(iterationListener.cList.get(i).toString());
                 iteration.setText(String.valueOf(i));
                 population1.setText(iterationListener.pList.get(i).toString());
@@ -81,16 +80,12 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static Population createInitialPopulation(int populationSize, int numOfChromosome, int coordinateRange, int numberOfPairs, Random random) {
-        Population population = new Population(numOfChromosome);
+    private static Population createInitialPopulation(int populationSize, int coordinateRange, int numberOfPairs, Random random) {
+        Population population = new Population(populationSize);
         //coordinateRange = 10;
         for (int i = 0; i < populationSize; i++) {
-            Chromosome base;
-            if(numberOfPairs == 0) {
-                base = new Chromosome(random);  //random number of pairs
-            }else {
-                base = new Chromosome(numberOfPairs, random);
-            }
+            Chromosome base = new Chromosome(numberOfPairs, random);
+
             for(int j = 0; j < base.getNumberOfPairs(); j++) {
                 int x = random.nextInt(coordinateRange);
                 int y = random.nextInt(coordinateRange);

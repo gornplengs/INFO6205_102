@@ -23,15 +23,6 @@ public class Chromosome implements Cloneable{
 	private int[][] pairs;
 	private Random random;
 
-	public Chromosome(Random random) {
-		this.random = random;
-		numberOfPairs = random.nextInt(10);
-		while(numberOfPairs == 0) {
-			numberOfPairs = random.nextInt(10);
-		}
-		pairs = new int[numberOfPairs][2];
-	}
-
 	public Chromosome(int number, Random random) {
 		this.random = random;
 		this.numberOfPairs = number;

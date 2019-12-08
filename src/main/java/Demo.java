@@ -37,7 +37,7 @@ public class Demo {
 		Random random = new Random();
 		int coordinateRange = 10;
 		for (int i = 0; i < populationSize; i++) {
-			Chromosome base = new Chromosome(random);
+			Chromosome base = new Chromosome(10, random);
 			for(int j = 0; j < base.getNumberOfPairs(); j++) {
 				int x = random.nextInt(coordinateRange);
 				int y = random.nextInt(coordinateRange);

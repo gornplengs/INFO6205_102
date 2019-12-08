@@ -18,14 +18,12 @@ package com.lagodiuk.ga;
 import java.util.*;
 
 public class GeneticAlgorithm {
-	// private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
-	private Double SURVIVE_RATE = 0.5;
-	private final Fitness fitnessFunc;
+	private Fitness fitnessFunc;
 	private Population population;
-	private boolean terminate = false;
-	private int iteration;
-	final IterationListener iterationListener = new IterationListener(iteration);
+	private IterationListener iterationListener;
 	private Random random;
+	private double SURVIVE_RATE = 0.5;
+	//private int iteration;
 
 	private class ChromosomesComparator implements Comparator<Chromosome> {
 		private final Map<Chromosome, Long> cache = new WeakHashMap<>();
@@ -70,12 +68,11 @@ public class GeneticAlgorithm {
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
-	public Population evolve() {
+	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
-
-		if(parentPopulationSize > 1){
-			Population newPopulation = new Population();
-			int newPopulationSize = (int) (parentPopulationSize * SURVIVE_RATE);
+		if(parentPopulationSize > 2) {
+			Population newPopulation = new Population((int) (parentPopulationSize * SURVIVE_RATE));
+			int newPopulationSize = newPopulation.getSize();
 
 			//1.sort old population by fitness
 			this.population.sortPopulationByFitness(this.chromosomesComparator);
@@ -86,7 +83,7 @@ public class GeneticAlgorithm {
 			}
 
 			//3.mutate
-			int range = random.nextInt(Math.max(newPopulationSize, 1));
+			int range = (int) (newPopulationSize * 0.01);   //possibility to mutate : 1%
 			for(int i = 0; i < range; i++) {
 				int mutateIndex = random.nextInt(newPopulationSize);
 				Chromosome chromosome = this.population.getChromosomeByIndex(mutateIndex);
@@ -95,26 +92,28 @@ public class GeneticAlgorithm {
 			}
 
 			//4.replace old population
-			this.population = newPopulation;
 			newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-			return newPopulation;
-		}else{
-			Population wu = new Population();
-          	return wu ;
+			this.population = newPopulation;
+
+//			return newPopulation;
 		}
+//		else {
+//		Population wu = new Population();
+//		return wu;
+//	}
 
 	}
 
 	public void evolve(int count) {
-		this.iteration = count;
-		//this.terminate = false;
-		int parentPopulationSize = this.population.getSize();
+		this.iterationListener = new IterationListener(count);
 		for (int i = 0; i < count; i++) {
-			//if (this.terminate)  break;
-			if(parentPopulationSize == 1) break;
+			if(this.population.getSize() <= 1) break;
 			this.evolve();
-			this.iteration = i;
+			//this.iteration = i;
 			iterationListener.update(this);
+//			if(this.population.getSize() <= 1) {
+//				break;
+//			}
 		}
 		iterationListener.printResult();
 	}
@@ -123,27 +122,25 @@ public class GeneticAlgorithm {
 		return this.population.getSize();
 	}
 
-	public Chromosome getBest() {
-		return this.population.getChromosomeByIndex(0);
+	public ChromosomesComparator getChromosomesComparator() {
+		return chromosomesComparator;
 	}
 
-	public int getIteration() {
-		return iteration;
+	public Chromosome getBest() {
+		System.out.println(population.getSize());
+		this.population.sortPopulationByFitness(chromosomesComparator);
+		return this.population.getChromosomeByIndex(0);
 	}
 
 	public IterationListener getIterationListener() {
 		return iterationListener;
 	}
 
-	public void terminate() {
-		this.terminate = true;
-	}
-
 	public Long fitness(Chromosome chromosome) {
 		return this.chromosomesComparator.fit(chromosome);
 	}
 
-	public void clearCache() {
-		this.chromosomesComparator.clearCache();
-	}
+//	public void clearCache() {
+//		this.chromosomesComparator.clearCache();
+//	}
 }
