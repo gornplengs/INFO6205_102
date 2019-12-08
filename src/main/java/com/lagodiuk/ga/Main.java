@@ -19,9 +19,12 @@ public class Main {
     private JTextField evolveField;
     private JLabel evolveLabel;
     private JTextField rangeField;
-    private JLabel resultHead;
-    private JLabel result;
-    private JTable table1;
+    private JTextField seedField;
+    private JLabel chromosome;
+    private JLabel iteration;
+    private JLabel population1;
+    private JLabel generation;
+    private JLabel score;
 
     public int populationSize = 240;
     public double surviveRate = 0.5;
@@ -29,6 +32,8 @@ public class Main {
     public int numOfChromosome = 1000;
     public int evolveCount = 5;
     public int coordinateRange = 10;
+    public long seed;
+    public Random random = new Random();
 
     public Main() {
         submitBTN.addActionListener(new ActionListener() {
@@ -46,17 +51,24 @@ public class Main {
                     numberOfPairs = Integer.parseInt(pairNumField.getText());
                 if(rangeField.getText() != null && !rangeField.getText().isEmpty())
                     coordinateRange = Integer.parseInt(rangeField.getText());
+                if(seedField.getText() != null && !seedField.getText().isEmpty()) {
+                    seed = Long.parseLong(seedField.getText());
+                    random.setSeed(seed);
+                }
 
-                Population population = createInitialPopulation(populationSize, numOfChromosome, coordinateRange, numberOfPairs);
+                Population population = createInitialPopulation(populationSize, numOfChromosome, coordinateRange, numberOfPairs, random);
                 Fitness fitnessFunc = new Fitness();
-                GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc, surviveRate);
+                GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc, surviveRate, random);
                 ga.evolve(evolveCount);
 
                 IterationListener iterationListener = ga.getIterationListener();
                 int i = iterationListener.cList.size() - 1;
-                //resultHead.setText("Hello");
-                resultHead.setText(String.format("%s\t%s\t%s\t%s\t%s", "iteration", "population", "generation", "score", "chromosome"));
-                result.setText(String.format("%s\t%s\t%s\t%s\t%s", i, iterationListener.pList.get(i), iterationListener.fList.get(i), iterationListener.eList.get(i), iterationListener.cList.get(i)));
+                chromosome.setText(iterationListener.cList.get(i).toString());
+                iteration.setText(String.valueOf(i));
+                population1.setText(iterationListener.pList.get(i).toString());
+                generation.setText(iterationListener.fList.get(i).toString());
+                score.setText(iterationListener.eList.get(i).toString());
+                //result.setText(String.format("%s\t%s\t%s\t%s\t%s", i, iterationListener.pList.get(i), iterationListener.fList.get(i), iterationListener.eList.get(i), iterationListener.cList.get(i)));
             }
         });
     }
@@ -69,16 +81,15 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static Population createInitialPopulation(int populationSize, int numOfChromosome, int coordinateRange, int numberOfPairs) {
+    private static Population createInitialPopulation(int populationSize, int numOfChromosome, int coordinateRange, int numberOfPairs, Random random) {
         Population population = new Population(numOfChromosome);
-        Random random = new Random();
         //coordinateRange = 10;
         for (int i = 0; i < populationSize; i++) {
             Chromosome base;
             if(numberOfPairs == 0) {
-                base = new Chromosome();  //random number of pairs
+                base = new Chromosome(random);  //random number of pairs
             }else {
-                base = new Chromosome(numberOfPairs);
+                base = new Chromosome(numberOfPairs, random);
             }
             for(int j = 0; j < base.getNumberOfPairs(); j++) {
                 int x = random.nextInt(coordinateRange);

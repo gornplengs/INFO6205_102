@@ -2,17 +2,20 @@ package com.lagodiuk.ga;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertNotEquals;
 
 public class MutationTest {
 
     @Test
     public void testMutate() {
-        Chromosome c1 = new Chromosome(2);
+        Random random = new Random();
+        Chromosome c1 = new Chromosome(2, random);
         c1.addPairs(0,0,0);
         c1.addPairs(1,1,0);
 
-        Chromosome c2 = new Chromosome(7);
+        Chromosome c2 = new Chromosome(7, random);
         c2.addPairs(0,1,3);
         c2.addPairs(1,2,4);
         c2.addPairs(2,3,4);

@@ -21,9 +21,10 @@ public class Chromosome implements Cloneable{
 	//private static final int DEFAULT_NUMBER_OF_COORDINATE_PAIRS = 10;
 	private int numberOfPairs;
 	private int[][] pairs;
-	private final Random random = new Random();
+	private Random random;
 
-	public Chromosome() {
+	public Chromosome(Random random) {
+		this.random = random;
 		numberOfPairs = random.nextInt(10);
 		while(numberOfPairs == 0) {
 			numberOfPairs = random.nextInt(10);
@@ -31,7 +32,8 @@ public class Chromosome implements Cloneable{
 		pairs = new int[numberOfPairs][2];
 	}
 
-	public Chromosome(int number) {
+	public Chromosome(int number, Random random) {
+		this.random = random;
 		this.numberOfPairs = number;
 		pairs = new int[numberOfPairs][2];
 	}
@@ -81,7 +83,7 @@ public class Chromosome implements Cloneable{
 
 	@Override
 	protected Chromosome clone() {
-		Chromosome clone = new Chromosome(this.pairs.length);
+		Chromosome clone = new Chromosome(this.pairs.length, random);
 		System.arraycopy(this.pairs, 0, clone.pairs, 0, this.pairs.length);
 		return clone;
 	}

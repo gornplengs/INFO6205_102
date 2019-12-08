@@ -2,19 +2,21 @@ package com.lagodiuk.ga;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 public class CandidateselectionTest {
 
     @Test
     public void evolve() {
-
+        Random random = new Random();
         Population population = new Population();
         Fitness fitnessFunc = new Fitness();
         Population parent = population.createInitialPopulation(240);
         Chromosome parentbest = parent.getChromosomeByIndex(0);
         int parentPopulationSize = parent.getSize();
-        GeneticAlgorithm ga = new GeneticAlgorithm(parent,fitnessFunc);
+        GeneticAlgorithm ga = new GeneticAlgorithm(parent, fitnessFunc, random);
         Population child = ga.evolve();
 
 
@@ -36,7 +38,7 @@ public class CandidateselectionTest {
        int childPopulationSize = child.getSize();
       
 
-        // children's populationSize is half of perent's populationSize
+        // children's populationSize is half of parent's populationSize
         assertEquals(childPopulationSize,120);
         assertEquals((childbestFitness>=bestFitness), (boolean) true);
     }

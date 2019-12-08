@@ -21,9 +21,10 @@ import com.lagodiuk.ga.Main;
 public class Demo {
 
 	public static void main(String[] args) {
+		Random random = new Random();
 		Population population = createInitialPopulation(240);
 		Fitness fitnessFunc = new Fitness();
-		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc);
+		GeneticAlgorithm ga = new GeneticAlgorithm(population, fitnessFunc, random);
 		ga.evolve(10);
 	}
 
@@ -36,7 +37,7 @@ public class Demo {
 		Random random = new Random();
 		int coordinateRange = 10;
 		for (int i = 0; i < populationSize; i++) {
-			Chromosome base = new Chromosome();
+			Chromosome base = new Chromosome(random);
 			for(int j = 0; j < base.getNumberOfPairs(); j++) {
 				int x = random.nextInt(coordinateRange);
 				int y = random.nextInt(coordinateRange);

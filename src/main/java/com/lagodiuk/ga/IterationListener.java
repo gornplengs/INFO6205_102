@@ -1,7 +1,5 @@
 package com.lagodiuk.ga;
 
-import edu.neu.coe.info6205.life.base.Game;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +49,8 @@ public class IterationListener {
         // Listener prints best achieved solution
 
 
-        for (int i = 0; i<cList.size(); i++) {
-         if(pList.get(i)==1){
+        for (int i = 0; i < cList.size(); i++) {
+         if(pList.get(i) == 1){
              System.out.println(String.format("%s\t%s\t%s\t%s\t%s", i, pList.get(i), fList.get(i), eList.get(i), cList.get(i)));
              break;}
 

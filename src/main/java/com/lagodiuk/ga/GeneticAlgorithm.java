@@ -25,11 +25,7 @@ public class GeneticAlgorithm {
 	private boolean terminate = false;
 	private int iteration;
 	final IterationListener iterationListener = new IterationListener(iteration);
-
-
-	// listeners of genetic algorithm iterations (handle callback afterwards)
-	// private final List<IterationListener> iterationListeners = new LinkedList<>();
-	// private final IterationListener iterationListener = new IterationListener();
+	private Random random;
 
 	private class ChromosomesComparator implements Comparator<Chromosome> {
 		private final Map<Chromosome, Long> cache = new WeakHashMap<>();
@@ -57,24 +53,24 @@ public class GeneticAlgorithm {
 	}
 	private final ChromosomesComparator chromosomesComparator;
 
-	public GeneticAlgorithm(Population population, Fitness fitnessFunc) {
+	public GeneticAlgorithm(Population population, Fitness fitnessFunc, Random random) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
 		this.chromosomesComparator = new ChromosomesComparator();
+		this.random = random;
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
-	public GeneticAlgorithm(Population population, Fitness fitnessFunc, double surviveRate) {
+	public GeneticAlgorithm(Population population, Fitness fitnessFunc, double surviveRate, Random random) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
 		this.chromosomesComparator = new ChromosomesComparator();
 		this.SURVIVE_RATE = surviveRate;
+		this.random = random;
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
 
 	public Population evolve() {
-
-
 		int parentPopulationSize = this.population.getSize();
 
 		if(parentPopulationSize > 1){
@@ -90,7 +86,6 @@ public class GeneticAlgorithm {
 			}
 
 			//3.mutate
-			Random random = new Random();
 			int range = random.nextInt(Math.max(newPopulationSize, 1));
 			for(int i = 0; i < range; i++) {
 				int mutateIndex = random.nextInt(newPopulationSize);
@@ -129,7 +124,6 @@ public class GeneticAlgorithm {
 	}
 
 	public Chromosome getBest() {
-
 		return this.population.getChromosomeByIndex(0);
 	}
 

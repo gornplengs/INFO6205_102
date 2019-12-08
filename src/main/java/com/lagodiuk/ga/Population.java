@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Population {
-
 	private static final int DEFAULT_NUMBER_OF_CHROMOSOMES = 1000;
 	private List<Chromosome> chromosomes;
-	private final Random random = new Random();
+	//private Random random;
 
 	public Population() {
 		this.chromosomes = new ArrayList<>(DEFAULT_NUMBER_OF_CHROMOSOMES);
@@ -66,7 +65,7 @@ public class Population {
 		Random random = new Random();
 		int coordinateRange = 10;
 		for (int i = 0; i < populationSize; i++) {
-			Chromosome base = new Chromosome();
+			Chromosome base = new Chromosome(random);
 			for(int j = 0; j < base.getNumberOfPairs(); j++) {
 				int x = random.nextInt(coordinateRange);
 				int y = random.nextInt(coordinateRange);
