@@ -107,7 +107,6 @@ public class GeneticAlgorithm {
 	public void evolve(int count) {
 		this.iterationListener = new IterationListener(count);
 		for (int i = 0; i < count; i++) {
-			System.out.println(".... " + this.population.getSize());
 			if(this.population.getSize() <= 1) break;
 			this.evolve();
 			//this.iteration = i;
