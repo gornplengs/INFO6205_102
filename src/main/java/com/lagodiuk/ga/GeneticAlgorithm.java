@@ -49,12 +49,11 @@ public class GeneticAlgorithm {
 			this.cache.clear();
 		}
 	}
-	private final ChromosomesComparator chromosomesComparator;
+	private final ChromosomesComparator chromosomesComparator = new ChromosomesComparator();;
 
 	public GeneticAlgorithm(Population population, Fitness fitnessFunc, Random random) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
-		this.chromosomesComparator = new ChromosomesComparator();
 		this.random = random;
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
 	}
@@ -62,7 +61,6 @@ public class GeneticAlgorithm {
 	public GeneticAlgorithm(Population population, Fitness fitnessFunc, double surviveRate, Random random) {
 		this.population = population;
 		this.fitnessFunc = fitnessFunc;
-		this.chromosomesComparator = new ChromosomesComparator();
 		this.SURVIVE_RATE = surviveRate;
 		this.random = random;
 		//this.population.sortPopulationByFitness(this.chromosomesComparator);
@@ -70,9 +68,11 @@ public class GeneticAlgorithm {
 
 	public void evolve() {
 		int parentPopulationSize = this.population.getSize();
+
 		if(parentPopulationSize > 2) {
-			Population newPopulation = new Population((int) (parentPopulationSize * SURVIVE_RATE));
-			int newPopulationSize = newPopulation.getSize();
+			int newPopulationSize = (int) (parentPopulationSize * SURVIVE_RATE);
+			Population newPopulation = new Population(newPopulationSize);
+
 
 			//1.sort old population by fitness
 			this.population.sortPopulationByFitness(this.chromosomesComparator);
@@ -107,6 +107,7 @@ public class GeneticAlgorithm {
 	public void evolve(int count) {
 		this.iterationListener = new IterationListener(count);
 		for (int i = 0; i < count; i++) {
+			System.out.println(".... " + this.population.getSize());
 			if(this.population.getSize() <= 1) break;
 			this.evolve();
 			//this.iteration = i;
@@ -127,7 +128,6 @@ public class GeneticAlgorithm {
 	}
 
 	public Chromosome getBest() {
-		System.out.println(population.getSize());
 		this.population.sortPopulationByFitness(chromosomesComparator);
 		return this.population.getChromosomeByIndex(0);
 	}

@@ -28,7 +28,6 @@ public class Main {
     public int populationSize = 240;
     public double surviveRate = 0.5;
     public int numberOfPairs;  //1 + random.nextInt(50)
-    public int numOfChromosome = 1000;
     public int evolveCount = 7;
     public int coordinateRange = 10;
     public long seed;
@@ -61,7 +60,7 @@ public class Main {
 
                 IterationListener iterationListener = ga.getIterationListener();
                 //int i = iterationListener.cList.size() - 1;
-                int i = evolveCount;
+                int i = evolveCount - 1;
                 chromosome.setText(iterationListener.cList.get(i).toString());
                 iteration.setText(String.valueOf(i));
                 population1.setText(iterationListener.pList.get(i).toString());

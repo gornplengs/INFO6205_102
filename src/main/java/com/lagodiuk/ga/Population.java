@@ -24,17 +24,16 @@ import java.util.Random;
 
 public class Population {
 	private static final int DEFAULT_NUMBER_OF_CHROMOSOMES = 1000;
-	private List<Chromosome> chromosomes;
+	private List<Chromosome> chromosomes = new ArrayList<>(DEFAULT_NUMBER_OF_CHROMOSOMES);
 	//private Random random;
-
-	public Population() {
-		this.chromosomes = new ArrayList<>(DEFAULT_NUMBER_OF_CHROMOSOMES);
-	}
 
 	public Population(int chromosomeNum) {
 		this.chromosomes = new ArrayList<>(chromosomeNum);
 	}
 
+	public Population() {
+		this.chromosomes = new ArrayList<>(DEFAULT_NUMBER_OF_CHROMOSOMES);
+	}
 	public void addChromosome(Chromosome chromosome) {
 		this.chromosomes.add(chromosome);
 	}
@@ -52,7 +51,7 @@ public class Population {
 	}
 
 	public void sortPopulationByFitness(Comparator<Chromosome> chromosomesComparator) {
-		Collections.shuffle(this.chromosomes);
+		//Collections.shuffle(this.chromosomes);
 		Collections.sort(this.chromosomes, chromosomesComparator);
 		Collections.reverse(this.chromosomes);
 	}
